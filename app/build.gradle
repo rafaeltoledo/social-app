@@ -20,8 +20,29 @@ android {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("$rootDir/distribution/debug.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
         release {
+            storeFile file("$rootDir/distribution/release.keystore")
+            storePassword System.env.RELEASE_STORE_PASSWORD
+            keyAlias System.env.RELEASE_KEY_ALIAS
+            keyPassword System.env.RELEASE_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
