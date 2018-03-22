@@ -25,6 +25,14 @@ jobs:
           command: openssl aes-256-cbc -d -in distribution/release.keystore-cipher -out distribution/release.keystore -md sha256 -k $CIPHER_DECRYPT_KEY
 
       - run:
+          name: Setup Google Services JSON
+          command: |
+            mkdir -p app/src/debug/ && touch app/src/debug/google-services.json
+            echo "${JSON_FIREBASE_DEVELOPMENT}" >> "app/src/debug/google-services.json"
+            mkdir -p app/src/release/ && touch app/src/release/google-services.json
+            echo "${JSON_FIREBASE_RELEASE}" >> "app/src/release/google-services.json"
+
+      - run:
           name: Build
           command: ./gradlew clean check assemble assembleAndroidTest
 
