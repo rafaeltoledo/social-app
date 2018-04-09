@@ -1,0 +1,29 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "$versions.jacoco"
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+task createCombinedCoverageReport(type: JacocoReport,
+        dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    def classes = fileTree(dir: "$buildDir/tmp/kotlin-classes/debug")
+
+    sourceDirectories = files("$projectDir/src/main/kotlin")
+    classDirectories = files(classes)
+    executionData = fileTree(dir: buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec',
+            'outputs/code-coverage/connected/*coverage.ec'
+    ])
+
+    reports {
+        xml.enabled = true
+        xml.destination file("$buildDir/reports/jacoco/report.xml")
+
+        html.enabled = true
+    }
+}
