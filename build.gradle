@@ -2,7 +2,7 @@ buildscript {
 
     ext.versions = [
             'kotlin': '1.2.31',
-            'supportLibrary': '27.1.0',
+            'supportLibrary': '27.1.1',
             'googleServices': '12.0.1',
             'jacoco': '0.8.1'
     ]
