@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
+apply from: "$rootDir/tools/coverage.gradle"
+
 android {
     compileSdkVersion 27
 
@@ -38,6 +40,8 @@ android {
 
     buildTypes {
         debug {
+            testCoverageEnabled true
+
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
@@ -47,6 +51,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources true
     }
 }
 
@@ -58,6 +66,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$versions.googleServices"
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.8'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

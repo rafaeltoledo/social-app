@@ -33,8 +33,28 @@ jobs:
             echo "${JSON_FIREBASE_RELEASE}" >> "app/src/release/google-services.json"
 
       - run:
+          name: Run Linters
+          command: ./gradlew check
+
+      - run:
+          name: Run Tests and generate Code Coverage
+          command: ./gradlew createCombinedCoverageReport
+
+      - run:
+          name: Upload code coverage data
+          command: ./gradlew coveralls
+
+      - run:
           name: Build
-          command: ./gradlew clean check assemble assembleAndroidTest
+          command: ./gradlew assemble assembleAndroidTest
+
+      - store_artifacts:
+          path: app/build/reports/jacoco/createCombinedCoverageReport
+          destination: coverage-report
+
+      - store_artifacts:
+          path: app/build/reports/tests/testDebugUnitTest
+          destination: local-test-report
 
       - save_cache:
           paths:

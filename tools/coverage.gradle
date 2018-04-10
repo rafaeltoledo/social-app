@@ -1,0 +1,37 @@
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+
+jacoco {
+    toolVersion = "$versions.jacoco"
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+def classes = fileTree(dir: "$buildDir/tmp/kotlin-classes/debug")
+def sources = files("$projectDir/src/main/kotlin")
+def report = "$buildDir/reports/jacoco/report.xml"
+
+task createCombinedCoverageReport(type: JacocoReport,
+        dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    sourceDirectories = sources
+    classDirectories = files(classes)
+    executionData = fileTree(dir: buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec',
+            'outputs/code-coverage/connected/*coverage.ec'
+    ])
+
+    reports {
+        xml.enabled = true
+        xml.destination file(report)
+
+        html.enabled = true
+    }
+}
+
+coveralls {
+    sourceDirs = sources.flatten()
+    jacocoReportPath = report
+}
