@@ -1,9 +1,7 @@
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 
-jacoco {
-    toolVersion = "$versions.jacoco"
-}
+jacoco.toolVersion versions.jacoco
 
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
