@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-apply from: "$rootDir/tools/coverage.gradle"
+apply from: "$rootDir/gradle/coverage.gradle"
 
 android {
     compileSdkVersion 27
