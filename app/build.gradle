@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.kapt'
 
 apply from: "$rootDir/gradle/coverage.gradle"
 
@@ -61,12 +62,19 @@ android {
 dependencies {
     implementation "com.android.support:appcompat-v7:$versions.supportLibrary"
 
+    implementation "android.arch.lifecycle:extensions:$versions.archComponents"
+    kapt "android.arch.lifecycle:compiler:$versions.archComponents"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     implementation 'com.google.firebase:firebase-core:15.0.2'
 
+    implementation "org.koin:koin-android:$versions.koin"
+    implementation "org.koin:koin-android-architecture:$versions.koin"
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'com.google.truth:truth:0.40'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
