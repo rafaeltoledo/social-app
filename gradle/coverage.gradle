@@ -12,7 +12,9 @@ def sources = files("$projectDir/src/main/kotlin")
 def report = "$buildDir/reports/jacoco/report.xml"
 
 task createCombinedCoverageReport(type: JacocoReport,
-        dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+        dependsOn: ['testDebugUnitTest'/*, 'createDebugCoverageReport'*/]) { // Disabling instrumented
+                                                                             // tests until we find a
+                                                                             // place to run them
 
     sourceDirectories = sources
     classDirectories = files(classes)
