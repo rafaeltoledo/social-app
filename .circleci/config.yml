@@ -9,6 +9,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       CIRCLE_JDK_VERSION: oraclejdk8
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
 
     steps:
       - checkout
@@ -34,27 +35,27 @@ jobs:
 
       - run:
           name: Run Linters
-          command: ./gradlew check
+          command: ./gradlew check --stacktrace
 
       - run:
           name: Run Tests and generate Code Coverage
-          command: ./gradlew createCombinedCoverageReport
+          command: ./gradlew createCombinedCoverageReport --stacktrace
 
       - run:
           name: Upload code coverage data
-          command: ./gradlew coveralls
+          command: ./gradlew coveralls --stacktrace
 
       - run:
           name: Build
-          command: ./gradlew assemble assembleAndroidTest
+          command: ./gradlew assemble assembleAndroidTest --stacktrace
 
       - store_artifacts:
-          path: app/build/reports/jacoco/createCombinedCoverageReport
-          destination: coverage-report
+          path: app/build/reports
+          destination: reports
 
       - store_artifacts:
-          path: app/build/reports/tests/testDebugUnitTest
-          destination: local-test-report
+          path: app/build/outputs/apk
+          destination: apks
 
       - save_cache:
           paths:
