@@ -2,14 +2,15 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-27-alpha
+      - image: circleci/android:api-28-alpha
 
     working_directory: ~/social-app
 
     environment:
-      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
       CIRCLE_JDK_VERSION: oraclejdk8
-      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
 
     steps:
       - checkout

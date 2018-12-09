@@ -3,6 +3,7 @@ package net.rafaeltoledo.social.setup
 import net.rafaeltoledo.social.TestSocialApp
 import org.junit.After
 import org.koin.standalone.StandAloneContext.closeKoin
+import org.koin.standalone.StandAloneContext.stopKoin
 import org.robolectric.RuntimeEnvironment
 
 abstract class BaseJvmTest {
@@ -11,6 +12,6 @@ abstract class BaseJvmTest {
 
     @After
     fun releaseKoin() {
-        closeKoin()
+        stopKoin()
     }
 }

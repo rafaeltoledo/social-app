@@ -2,15 +2,14 @@ package net.rafaeltoledo.social.setup
 
 import android.app.Application
 import android.content.Context
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnitRunner
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnitRunner
 import net.rafaeltoledo.social.TestSocialApp
-import org.junit.After
-import org.koin.standalone.StandAloneContext
 
 abstract class BaseInstrumentedTest {
 
-    protected val app: TestSocialApp by lazy { InstrumentationRegistry.getTargetContext().applicationContext as TestSocialApp }
+    protected val app: TestSocialApp by lazy { ApplicationProvider.getApplicationContext() as TestSocialApp }
 }
 
 class SocialAppTestRunner : AndroidJUnitRunner() {

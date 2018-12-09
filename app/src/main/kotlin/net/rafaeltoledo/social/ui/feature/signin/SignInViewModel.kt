@@ -1,9 +1,8 @@
 package net.rafaeltoledo.social.ui.feature.signin
 
 import android.app.Activity
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
-import kotlinx.coroutines.experimental.launch
+import androidx.lifecycle.MutableLiveData
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.data.User
 import net.rafaeltoledo.social.data.auth.AuthManager
@@ -24,14 +23,13 @@ class SignInViewModel(private val auth: AuthManager, private val googleAuth: Del
     }
 
     fun onResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = authClient.value?.onResult(requestCode, resultCode, data)
-        if (result?.status == Status.SUCCESS) {
-            launch {
-                user.postValue(auth.socialSignIn(result.token!!, SocialProvider.GOOGLE).await())
+        launchDataLoad {
+            val result = authClient.value?.onResult(requestCode, resultCode, data)
+            if (result?.status == Status.SUCCESS) {
+                user.postValue(auth.socialSignIn(result.token!!, SocialProvider.GOOGLE))
+            } else {
+                error.postValue(R.string.error_sign_in)
             }
-        } else {
-            loading.value = false
-            error.postValue(R.string.error_sign_in)
         }
     }
 }

@@ -3,4 +3,5 @@
     <string name="button_google_sign_in">Sign in with Google</string>
 
     <string name="error_sign_in">Failed to perform sign in</string>
+    <string name="error_default_message">Oops… something went wrong!</string>
 </resources>

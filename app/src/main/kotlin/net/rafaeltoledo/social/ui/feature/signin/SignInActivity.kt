@@ -1,16 +1,16 @@
 package net.rafaeltoledo.social.ui.feature.signin
 
-import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.databinding.ActivitySignInBinding
 import net.rafaeltoledo.social.ui.feature.main.MainActivity
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignInActivity : AppCompatActivity() {
 
@@ -29,25 +29,23 @@ class SignInActivity : AppCompatActivity() {
 
     private fun observeAuthClient() {
         signInViewModel.authClient.observe(this, Observer {
-            it?.signIn(this)
+            it.signIn(this)
         })
 
         signInViewModel.user.observe(this, Observer {
-            it?.let {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         })
     }
 
     private fun observeViewState() {
         signInViewModel.loading.observe(this, Observer {
-            binding.progress.visibility = if (it!!) View.VISIBLE else View.GONE
+            binding.progress.visibility = if (it) View.VISIBLE else View.GONE
             binding.buttonGoogleSignIn.isEnabled = it != true
         })
 
         signInViewModel.error.observe(this, Observer {
-            Snackbar.make(binding.root, it!!, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
     }
 
