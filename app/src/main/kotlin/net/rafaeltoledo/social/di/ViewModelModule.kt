@@ -2,10 +2,10 @@ package net.rafaeltoledo.social.di
 
 import net.rafaeltoledo.social.ui.feature.main.MainViewModel
 import net.rafaeltoledo.social.ui.feature.signin.SignInViewModel
-import org.koin.android.architecture.ext.viewModel
-import org.koin.dsl.module.applicationContext
+import org.koin.androidx.viewmodel.ext.koin.viewModel
+import org.koin.dsl.module.module
 
-val viewModelModule = applicationContext {
+val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { SignInViewModel(get(), get()) }
 }

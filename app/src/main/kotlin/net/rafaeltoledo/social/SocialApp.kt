@@ -11,7 +11,7 @@ open class SocialApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(listOf(
+        startKoin(this, listOf(
                 viewModelModule,
                 firstModule,
                 authModule,

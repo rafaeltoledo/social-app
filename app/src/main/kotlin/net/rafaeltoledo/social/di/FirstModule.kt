@@ -1,7 +1,7 @@
 package net.rafaeltoledo.social.di
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-val firstModule = applicationContext {
-    bean { "Social App" }
+val firstModule = module {
+    single { "Social App" }
 }

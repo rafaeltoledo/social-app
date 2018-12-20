@@ -2,9 +2,9 @@ package net.rafaeltoledo.social.di
 
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.firebase.FirebaseAuthManager
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-val firebaseModule = applicationContext {
+val firebaseModule = module {
 
-    bean { FirebaseAuthManager() as AuthManager }
+    single<AuthManager> { FirebaseAuthManager() }
 }

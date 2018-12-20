@@ -2,13 +2,13 @@ package net.rafaeltoledo.social.ui.feature.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.ui.feature.signin.SignInActivity
-import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 

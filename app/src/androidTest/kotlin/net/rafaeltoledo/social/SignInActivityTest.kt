@@ -3,19 +3,16 @@ package net.rafaeltoledo.social
 import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.intent.Intents.intending
-import android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry
-import android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras
-import android.support.test.espresso.intent.rule.IntentsTestRule
-import android.support.test.espresso.matcher.ViewMatchers.*
-import android.support.test.runner.AndroidJUnit4
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.experimental.async
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
+import androidx.test.espresso.intent.rule.IntentsTestRule
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.mockk.*
 import net.rafaeltoledo.social.data.User
 import net.rafaeltoledo.social.data.auth.*
 import net.rafaeltoledo.social.setup.BaseInstrumentedTest
@@ -52,7 +49,7 @@ class SignInActivityTest : BaseInstrumentedTest() {
         every { delegatedAuth.signIn(any()) } answers { (it.invocation.args[0] as Activity).startActivityForResult(Intent().putExtra("key", "value"), 0) }
         every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(Status.SUCCESS, token = "ok")
 
-        every { authManager.socialSignIn(any(), any()) } returns async { User("1") }
+        coEvery { authManager.socialSignIn(any(), any()) } returns User("1")
         every { authManager.isUserLoggedIn() } returns true
 
         activityRule.launchActivity(Intent())
@@ -67,8 +64,7 @@ class SignInActivityTest : BaseInstrumentedTest() {
         onView(withText(app.stringValue)).check(matches(isDisplayed()))
 
         verify(exactly = 1) { delegatedAuth.signIn(activityRule.activity) }
-        verify(exactly = 1) { authManager.socialSignIn("ok", SocialProvider.GOOGLE) }
-
+        coVerify(exactly = 1) { authManager.socialSignIn("ok", SocialProvider.GOOGLE) }
     }
 
     @Test
@@ -89,7 +85,7 @@ class SignInActivityTest : BaseInstrumentedTest() {
         onView(withText(R.string.error_sign_in)).check(matches(isDisplayed()))
 
         verify(exactly = 1) { delegatedAuth.signIn(activityRule.activity) }
-        verify(exactly = 0) { authManager.socialSignIn(any(), any()) }
+        coVerify(exactly = 0) { authManager.socialSignIn(any(), any()) }
     }
 }
 

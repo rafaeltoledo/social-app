@@ -33,7 +33,7 @@ class GoogleAuth : DelegatedAuth {
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         return try {
             val account = task.getResult(ApiException::class.java)
-            AuthResult(Status.SUCCESS, account.idToken)
+            AuthResult(Status.SUCCESS, account!!.idToken)
         } catch (e: ApiException) {
             AuthResult(Status.FAILURE)
         }
