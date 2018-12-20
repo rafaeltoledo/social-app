@@ -16,7 +16,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner 'net.rafaeltoledo.social.setup.SocialAppTestRunner'
+        testInstrumentationRunner 'net.rafaeltoledo.social.SocialAppTestRunner'
     }
 
     dataBinding.enabled true
@@ -72,6 +72,11 @@ android {
     }
 }
 
+def bothTestImplementation(String dependency) {
+    project.dependencies.add("testImplementation", dependency)
+    project.dependencies.add("androidTestImplementation", dependency)
+}
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
@@ -92,20 +97,22 @@ dependencies {
     implementation "org.koin:koin-android:$versions.koin"
     implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.1'
-    testImplementation 'com.google.truth:truth:0.42'
-    testImplementation "org.koin:koin-test:$versions.koin"
-    testImplementation "io.mockk:mockk:$versions.mockk"
-    testImplementation "android.arch.core:core-testing:$versions.archComponents"
+    bothTestImplementation "androidx.test:core:$versions.testcore"
+    bothTestImplementation "androidx.test.ext:junit:$versions.testcore"
+    bothTestImplementation "androidx.test.ext:truth:$versions.testcore"
+    bothTestImplementation "androidx.test:runner:$versions.astl"
+    bothTestImplementation "androidx.test:rules:$versions.astl"
+    bothTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+    bothTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
+    bothTestImplementation 'com.google.truth:truth:0.42'
+    bothTestImplementation "org.koin:koin-test:$versions.koin"
+    bothTestImplementation 'androidx.arch.core:core-testing:2.0.0'
 
-    androidTestImplementation "androidx.test:core:$versions.testcore"
-    androidTestImplementation "androidx.test.ext:junit:$versions.testcore"
-    androidTestImplementation "androidx.test:runner:$versions.astl"
-    androidTestImplementation "androidx.test:rules:$versions.astl"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
+    testImplementation 'org.robolectric:robolectric:4.1'
+    testImplementation "io.mockk:mockk:$versions.mockk"
+
     androidTestImplementation "io.mockk:mockk-android:$versions.mockk"
+
     androidTestUtil "androidx.test:orchestrator:$versions.astl"
 }
 

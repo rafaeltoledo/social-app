@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.app.Activity" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="net.rafaeltoledo.social.ui.feature.signin.SignInViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,6 +34,8 @@
             android:id="@+id/button_google_sign_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:enabled="@{!safeUnbox(viewModel.loading)}"
+            android:onClick="@{v -> viewModel.googleSignIn((Activity) context)}"
             android:text="@string/button_google_sign_in"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="@{safeUnbox(viewModel.loading) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

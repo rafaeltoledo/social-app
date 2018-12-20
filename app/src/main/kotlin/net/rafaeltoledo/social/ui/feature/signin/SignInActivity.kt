@@ -2,7 +2,6 @@ package net.rafaeltoledo.social.ui.feature.signin
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -21,7 +20,8 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
 
-        binding.buttonGoogleSignIn.setOnClickListener { signInViewModel.googleSignIn(this) }
+        binding.setLifecycleOwner(this)
+        binding.viewModel = signInViewModel
 
         observeAuthClient()
         observeViewState()
@@ -39,11 +39,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun observeViewState() {
-        signInViewModel.loading.observe(this, Observer {
-            binding.progress.visibility = if (it) View.VISIBLE else View.GONE
-            binding.buttonGoogleSignIn.isEnabled = it != true
-        })
-
         signInViewModel.error.observe(this, Observer {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
