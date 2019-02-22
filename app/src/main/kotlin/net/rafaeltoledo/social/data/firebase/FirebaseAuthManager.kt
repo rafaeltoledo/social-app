@@ -3,7 +3,7 @@ package net.rafaeltoledo.social.data.firebase
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import net.rafaeltoledo.social.data.User
+import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.SocialProvider
 

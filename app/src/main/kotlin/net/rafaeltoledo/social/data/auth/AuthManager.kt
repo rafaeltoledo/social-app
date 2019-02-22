@@ -1,6 +1,6 @@
 package net.rafaeltoledo.social.data.auth
 
-import net.rafaeltoledo.social.data.User
+import net.rafaeltoledo.social.data.model.User
 
 interface AuthManager {
 

@@ -3,6 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.kapt'
 
 apply from: "$rootDir/gradle/coverage.gradle"
+apply from: "$rootDir/gradle/lint.gradle"
 
 android {
     compileSdkVersion 28
@@ -49,8 +50,6 @@ android {
         debug {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT\""
 
-            testCoverageEnabled true
-
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
@@ -73,8 +72,8 @@ android {
 }
 
 def bothTestImplementation(String dependency) {
-    project.dependencies.add("testImplementation", dependency)
-    project.dependencies.add("androidTestImplementation", dependency)
+    project.dependencies.add('testImplementation', dependency)
+    project.dependencies.add('androidTestImplementation', dependency)
 }
 
 dependencies {
@@ -87,9 +86,9 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
 
-    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
 
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
@@ -104,11 +103,11 @@ dependencies {
     bothTestImplementation "androidx.test:rules:$versions.astl"
     bothTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
     bothTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
-    bothTestImplementation 'com.google.truth:truth:0.42'
+    bothTestImplementation 'com.google.truth:truth:0.43'
     bothTestImplementation "org.koin:koin-test:$versions.koin"
     bothTestImplementation 'androidx.arch.core:core-testing:2.0.0'
 
-    testImplementation 'org.robolectric:robolectric:4.1'
+    testImplementation 'org.robolectric:robolectric:4.2'
     testImplementation "io.mockk:mockk:$versions.mockk"
 
     androidTestImplementation "io.mockk:mockk-android:$versions.mockk"

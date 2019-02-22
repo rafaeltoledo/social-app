@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="net.rafaeltoledo.social">
 
-    <application>
+    <application tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="firebase_analytics_collection_deactivated"
             android:value="true" />
