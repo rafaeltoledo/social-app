@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-28-node
 
     working_directory: ~/social-app
 
@@ -14,6 +14,14 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+          name: Setup Danger
+          command: yarn add danger
+
+      - run:
+          name: Danger
+          command: yarn danger ci
 
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
