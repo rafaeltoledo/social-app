@@ -11,22 +11,15 @@ def classes = fileTree(dir: "$buildDir/tmp/kotlin-classes/debug")
 def sources = files("$projectDir/src/main/kotlin")
 def report = "$buildDir/reports/jacoco/report.xml"
 
-task createCombinedCoverageReport(type: JacocoReport,
-        dependsOn: ['testDebugUnitTest'/*, 'createDebugCoverageReport'*/]) { // Disabling instrumented
-                                                                             // tests until we find a
-                                                                             // place to run them
+task createCombinedCoverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
-    sourceDirectories = sources
-    classDirectories = files(classes)
-    executionData = fileTree(dir: buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec',
-            'outputs/code-coverage/connected/*coverage.ec'
-    ])
+    sourceDirectories.setFrom(sources)
+    classDirectories.setFrom(files(classes))
+    executionData.setFrom(fileTree(dir: buildDir, includes: ['jacoco/testDebugUnitTest.exec']))
 
     reports {
         xml.enabled = true
         xml.destination file(report)
-
         html.enabled = true
     }
 }

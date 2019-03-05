@@ -3,7 +3,7 @@ package net.rafaeltoledo.social
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
-import net.rafaeltoledo.social.data.User
+import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
 import net.rafaeltoledo.social.data.auth.GoogleAuth
@@ -58,7 +58,8 @@ class TestSocialApp : SocialApp() {
 
 val noOpAuthManager = object : AuthManager {
 
-    override suspend fun socialSignIn(token: String, provider: SocialProvider) = User("0")
+    override suspend fun socialSignIn(token: String, provider: SocialProvider) =
+        User("0")
 
     override fun isUserLoggedIn() = true
 }

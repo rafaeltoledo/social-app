@@ -40,7 +40,7 @@ class GoogleAuth : DelegatedAuth {
     }
 
     override fun signOut(callback: (Status) -> Unit) {
-        client?.signOut()?.addOnCompleteListener { callback.invoke(if (it.isSuccessful) Status.SUCCESS else Status.FAILURE) }
+        client?.signOut()?.addOnCompleteListener { callback(if (it.isSuccessful) Status.SUCCESS else Status.FAILURE) }
     }
 
     companion object {

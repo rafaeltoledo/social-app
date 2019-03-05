@@ -1,14 +1,15 @@
 buildscript {
 
     ext.versions = [
-            'kotlin': '1.3.11',
-            'jacoco': '0.8.2',
+            'kotlin': '1.3.21',
+            'jacoco': '0.8.3',
             'lifecycle': '2.0.0',
             'koin': '1.0.2',
-            'mockk': '1.8.13.kotlin13',
+            'mockk': '1.9.1',
             'espresso': '3.1.1',
             'astl': '1.1.1',
             'testcore': '1.1.0',
+            'detekt': '1.0.0-RC14',
     ]
     
     repositories {
@@ -18,11 +19,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath 'com.google.gms:google-services:4.2.0'
         classpath "org.jacoco:org.jacoco.core:$versions.jacoco"
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$versions.detekt"
     }
 }
 
