@@ -20,6 +20,11 @@ android {
         testInstrumentationRunner 'net.rafaeltoledo.social.SocialAppTestRunner'
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     dataBinding.enabled true
 
     sourceSets {
@@ -50,6 +55,8 @@ android {
         debug {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT\""
 
+            multiDexEnabled true
+
             applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
         }
@@ -58,7 +65,7 @@ android {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_RELEASE\""
 
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -82,37 +89,38 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
-    kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidx.lifecycle"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2'
 
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-auth:18.0.0'
 
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     implementation "org.koin:koin-android:$versions.koin"
     implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
 
-    bothTestImplementation "androidx.test:core:$versions.testcore"
-    bothTestImplementation "androidx.test.ext:junit:$versions.testcore"
-    bothTestImplementation "androidx.test.ext:truth:$versions.testcore"
-    bothTestImplementation "androidx.test:runner:$versions.astl"
-    bothTestImplementation "androidx.test:rules:$versions.astl"
-    bothTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
-    bothTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
-    bothTestImplementation 'com.google.truth:truth:0.43'
+    bothTestImplementation "androidx.test:core:$versions.androidx.testcore"
+    bothTestImplementation "androidx.test.ext:junit:$versions.androidx.junitext"
+    bothTestImplementation "androidx.test.ext:truth:$versions.androidx.testcore"
+    bothTestImplementation "androidx.test:runner:$versions.androidx.testcore"
+    bothTestImplementation "androidx.test:rules:$versions.androidx.testcore"
+    bothTestImplementation "androidx.test.espresso:espresso-core:$versions.androidx.espresso"
+    bothTestImplementation "androidx.test.espresso:espresso-intents:$versions.androidx.espresso"
+    bothTestImplementation 'com.google.truth:truth:0.45'
     bothTestImplementation "org.koin:koin-test:$versions.koin"
-    bothTestImplementation 'androidx.arch.core:core-testing:2.0.0'
+    bothTestImplementation "androidx.arch.core:core-testing:$versions.androidx.archcore"
 
-    testImplementation 'org.robolectric:robolectric:4.2'
+    testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation "io.mockk:mockk:$versions.mockk"
 
+    androidTestImplementation 'com.github.tmurakami:dexopener:2.0.2'
     androidTestImplementation "io.mockk:mockk-android:$versions.mockk"
 
-    androidTestUtil "androidx.test:orchestrator:$versions.astl"
+    androidTestUtil "androidx.test:orchestrator:$versions.androidx.testcore"
 }
 
 apply plugin: 'com.google.gms.google-services'
