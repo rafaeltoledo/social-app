@@ -62,12 +62,15 @@ class SignInActivityTest : BaseTest() {
                 0
             )
         }
-        every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(Status.SUCCESS, token = "ok")
+        every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(
+            Status.SUCCESS,
+            token = "ok"
+        )
 
         coEvery { authManager.socialSignIn(any(), any()) } returns User("1")
         every { authManager.isUserLoggedIn() } returns true
 
-        val scenario = ActivityScenario.launch(SignInActivity::class.java)
+        ActivityScenario.launch(SignInActivity::class.java)
 
         intending(hasExtras(hasEntry(equalTo("key"), equalTo("value"))))
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
@@ -78,10 +81,8 @@ class SignInActivityTest : BaseTest() {
         // Assert
         assertThat(getIntents().last()).hasComponentClass(MainActivity::class.java)
 
-        scenario.onActivity {
-            verify(exactly = 1) { delegatedAuth.signIn(it) }
-            coVerify(exactly = 1) { authManager.socialSignIn("ok", SocialProvider.GOOGLE) }
-        }
+        verify(exactly = 1) { delegatedAuth.signIn(ofType(SignInActivity::class)) }
+        coVerify(exactly = 1) { authManager.socialSignIn("ok", SocialProvider.GOOGLE) }
     }
 
     @Test
@@ -95,7 +96,7 @@ class SignInActivityTest : BaseTest() {
         }
         every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(Status.FAILURE)
 
-        val scenario = ActivityScenario.launch(SignInActivity::class.java)
+        ActivityScenario.launch(SignInActivity::class.java)
         intending(hasExtras(hasEntry(equalTo("key"), equalTo("value"))))
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, null))
 
@@ -105,9 +106,7 @@ class SignInActivityTest : BaseTest() {
         // Assert
         onView(withText(R.string.error_sign_in)).check(matches(isDisplayed()))
 
-        scenario.onActivity {
-            verify(exactly = 1) { delegatedAuth.signIn(it) }
-            coVerify(exactly = 0) { authManager.socialSignIn(any(), any()) }
-        }
+        verify(exactly = 1) { delegatedAuth.signIn(ofType(SignInActivity::class)) }
+        coVerify(exactly = 0) { authManager.socialSignIn(any(), any()) }
     }
 }
