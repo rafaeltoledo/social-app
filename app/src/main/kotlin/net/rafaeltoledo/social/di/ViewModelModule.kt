@@ -2,8 +2,8 @@ package net.rafaeltoledo.social.di
 
 import net.rafaeltoledo.social.ui.feature.main.MainViewModel
 import net.rafaeltoledo.social.ui.feature.signin.SignInViewModel
-import org.koin.androidx.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.module
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }

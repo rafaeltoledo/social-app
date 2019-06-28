@@ -1,23 +1,13 @@
 package net.rafaeltoledo.social
 
-import android.app.Application
-import android.content.Context
-import androidx.test.runner.AndroidJUnitRunner
-import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
 import net.rafaeltoledo.social.data.auth.GoogleAuth
 import net.rafaeltoledo.social.data.auth.SocialProvider
-import org.koin.dsl.module.module
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.StandAloneContext.stopKoin
-
-class SocialAppTestRunner : AndroidJUnitRunner() {
-
-    override fun newApplication(cl: ClassLoader?, className: String?, context: Context?): Application {
-        return super.newApplication(cl, TestSocialApp::class.java.name, context)
-    }
-}
+import net.rafaeltoledo.social.data.model.User
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 class TestSocialApp : SocialApp() {
 
