@@ -1,31 +1,38 @@
 package net.rafaeltoledo.social.data.firebase
 
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.SocialProvider
+import net.rafaeltoledo.social.data.model.User
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseAuthManager : AuthManager {
 
     private val auth = FirebaseAuth.getInstance()
 
-    override suspend fun socialSignIn(token: String, provider: SocialProvider): User {
-        if (provider == SocialProvider.GOOGLE) {
-            return googleSignIn(token)
-        }
-        throw NotImplementedError("Unknown provider")
-    }
-
-    private fun googleSignIn(token: String): User {
-        val task = auth.signInWithCredential(GoogleAuthProvider.getCredential(token, null))
-        Tasks.await(task)
-        if (task.isSuccessful.not()) {
-            throw task.exception!!
+    override suspend fun socialSignIn(token: String, provider: SocialProvider): User =
+        suspendCoroutine {
+            when (provider) {
+                SocialProvider.GOOGLE -> googleSignIn(token, it)
+            }
         }
 
-        return User(task.result!!.user.uid)
+    private fun googleSignIn(
+        token: String,
+        continuation: Continuation<User>
+    ) {
+        auth.signInWithCredential(GoogleAuthProvider.getCredential(token, null))
+            .addOnCompleteListener {
+                if (it.isSuccessful.not()) {
+                    continuation.resumeWithException(it.exception!!)
+                } else {
+                    continuation.resume(User(it.result!!.user.uid))
+                }
+            }
     }
 
     override fun isUserLoggedIn() = auth.currentUser != null

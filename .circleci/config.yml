@@ -1,22 +1,70 @@
 version: 2
-jobs:
-  build:
+
+references:
+  workspace: &workspace
+    ~/social-app
+
+  config-android: &config-android
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-28
+    working_directory: *workspace
+    enviroment:
+      JAVA_TOOL_OPTIONS: "-Xmx1536m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+      CIRCLE_JDK_VERSION: oraclejdk8
+      TERM: dumb
 
-    working_directory: ~/social-app
-
+  config-gcloud: &config-gcloud
+    docker:
+      - image: google/cloud-sdk:latest
+    working_directory: *workspace
     environment:
       TERM: dumb
-      JAVA_TOOL_OPTIONS: "-Xmx1g"
-      CIRCLE_JDK_VERSION: oraclejdk8
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+
+  cache_key: &cache_key
+    key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+  restore_cache: &restore_cache
+    restore_cache:
+      <<: *cache_key
+
+  save_cache: &save_cache
+    save_cache:
+      <<: *cache_key
+      paths:
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
+
+  persist_to_workspace: &persist_to_workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - app/build/reports
+        - app/build/outputs
+        - scripts/**
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace
+
+commands:
+  store-social-app-artifacts:
+    description: "It stores Lint & Test artifacts"
+    parameters:
+      artifact-path:
+        type: string
+    steps:
+      - store_artifacts:
+          path: <<paramters.artifact-path>>
+
+jobs:
+  build:
+    <<: *config-android
 
     steps:
       - checkout
 
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - *restore_cache
 
       - run:
           name: Accept licenses
@@ -50,6 +98,9 @@ jobs:
           name: Build
           command: ./gradlew assemble assembleAndroidTest --stacktrace
 
+      - store_test_results:
+          path: app/build/test-results
+
       - store_artifacts:
           path: app/build/reports
           destination: reports
@@ -58,7 +109,45 @@ jobs:
           path: app/build/outputs/apk
           destination: apks
 
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - store_artifacts:
+          path: app/build/outputs/bundle
+          destination: bundle
+
+      - *save_cache
+
+      - *persist_to_workspace
+
+  test_instrumented:
+    <<: *config-gcloud
+
+    steps:
+      - *attach_workspace
+
+      - run:
+          name: Setup Google Cloud auth
+          command: scripts/ftl-setup.sh
+
+      - run:
+          name: Run tests on Firebase Test Lab
+          command: scripts/ftl-run-tests.sh
+
+      - run:
+          name: Download results
+          command: scripts/ftl-download-results.sh firebase_test_results
+          when: always
+
+      - store_artifacts:
+          path: firebase_test_results
+
+      - store_test_results:
+          path: firebase_test_results
+
+workflows:
+  version: 2
+
+  build_and_test:
+    jobs:
+      - build
+      - test_instrumented:
+          requires:
+            - build
