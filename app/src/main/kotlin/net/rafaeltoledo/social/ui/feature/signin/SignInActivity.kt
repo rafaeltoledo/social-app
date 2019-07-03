@@ -20,7 +20,7 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.viewModel = signInViewModel
 
         observeAuthClient()

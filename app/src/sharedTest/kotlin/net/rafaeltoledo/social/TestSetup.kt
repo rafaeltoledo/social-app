@@ -2,11 +2,13 @@ package net.rafaeltoledo.social
 
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
+import net.rafaeltoledo.social.data.auth.FacebookAuth
 import net.rafaeltoledo.social.data.auth.GoogleAuth
 import net.rafaeltoledo.social.data.auth.SocialProvider
 import net.rafaeltoledo.social.data.model.User
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.stopKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 class TestSocialApp : SocialApp() {
@@ -15,7 +17,8 @@ class TestSocialApp : SocialApp() {
         super.onCreate()
         loadKoinModules(listOf(
                 module(override = true) {
-                    single { delegatedAuth }
+                    single(named(SocialProvider.GOOGLE.name)) { googleAuth }
+                    single(named(SocialProvider.FACEBOOK.name)) { fbAuth }
                     single { authManager }
                     single { stringValue }
                 }
@@ -27,9 +30,15 @@ class TestSocialApp : SocialApp() {
         super.onTerminate()
     }
 
-    var delegatedAuth: DelegatedAuth = GoogleAuth()
+    var googleAuth: DelegatedAuth = GoogleAuth()
         set(value) {
-            loadKoinModules(module { single(override = true) { value } })
+            loadKoinModules(module { single(named(SocialProvider.GOOGLE.name), override = true) { value } })
+            field = value
+        }
+
+    var fbAuth: DelegatedAuth = FacebookAuth()
+        set(value) {
+            loadKoinModules(module { single(named(SocialProvider.FACEBOOK.name), override = true) { value } })
             field = value
         }
 

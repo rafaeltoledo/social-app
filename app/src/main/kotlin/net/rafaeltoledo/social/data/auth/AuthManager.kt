@@ -10,5 +10,5 @@ interface AuthManager {
 }
 
 enum class SocialProvider {
-    GOOGLE
+    GOOGLE, FACEBOOK
 }
