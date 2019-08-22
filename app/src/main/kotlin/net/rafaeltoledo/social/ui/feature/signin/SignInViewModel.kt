@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import net.rafaeltoledo.social.R
-import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
 import net.rafaeltoledo.social.data.auth.SocialProvider
 import net.rafaeltoledo.social.data.auth.Status
+import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.ui.BaseViewModel
 
 class SignInViewModel(private val auth: AuthManager, private val googleAuth: DelegatedAuth) : BaseViewModel() {
