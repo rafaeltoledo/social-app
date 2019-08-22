@@ -23,12 +23,12 @@ import io.mockk.mockk
 import io.mockk.verify
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.base.BaseTest
-import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.AuthResult
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
 import net.rafaeltoledo.social.data.auth.SocialProvider
 import net.rafaeltoledo.social.data.auth.Status
+import net.rafaeltoledo.social.data.model.User
 import net.rafaeltoledo.social.ui.feature.main.MainActivity
 import net.rafaeltoledo.social.ui.feature.signin.SignInActivity
 import org.hamcrest.Matchers.equalTo

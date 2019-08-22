@@ -2,13 +2,13 @@ package net.rafaeltoledo.social.data.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import net.rafaeltoledo.social.data.auth.AuthManager
-import net.rafaeltoledo.social.data.auth.SocialProvider
-import net.rafaeltoledo.social.data.model.User
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import net.rafaeltoledo.social.data.auth.AuthManager
+import net.rafaeltoledo.social.data.auth.SocialProvider
+import net.rafaeltoledo.social.data.model.User
 
 class FirebaseAuthManager : AuthManager {
 
@@ -30,7 +30,7 @@ class FirebaseAuthManager : AuthManager {
                 if (it.isSuccessful.not()) {
                     continuation.resumeWithException(it.exception!!)
                 } else {
-                    continuation.resume(User(it.result!!.user.uid))
+                    continuation.resume(User(it.result!!.user!!.uid))
                 }
             }
     }
