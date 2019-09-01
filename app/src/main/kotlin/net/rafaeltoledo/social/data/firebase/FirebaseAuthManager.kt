@@ -1,7 +1,11 @@
 package net.rafaeltoledo.social.data.firebase
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import java.lang.Exception
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -16,23 +20,26 @@ class FirebaseAuthManager : AuthManager {
 
     override suspend fun socialSignIn(token: String, provider: SocialProvider): User =
         suspendCoroutine {
-            when (provider) {
-                SocialProvider.GOOGLE -> googleSignIn(token, it)
+            auth.signInWithCredential(
+                when (provider) {
+                    SocialProvider.GOOGLE -> GoogleAuthProvider.getCredential(token, null)
+                    SocialProvider.FACEBOOK -> FacebookAuthProvider.getCredential(token)
+                }
+            ).addOnCompleteListener { task ->
+                handleResult(task, it)
             }
         }
 
-    private fun googleSignIn(
-        token: String,
-        continuation: Continuation<User>
-    ) {
-        auth.signInWithCredential(GoogleAuthProvider.getCredential(token, null))
-            .addOnCompleteListener {
-                if (it.isSuccessful.not()) {
-                    continuation.resumeWithException(it.exception!!)
-                } else {
-                    continuation.resume(User(it.result!!.user!!.uid))
-                }
-            }
+    private fun handleResult(task: Task<AuthResult>, continuation: Continuation<User>) {
+        if (task.isSuccessful.not()) {
+            continuation.resumeWithException(
+                task.exception ?: Exception("No exception was thrown by Firebase")
+            )
+        } else {
+            continuation.resume(
+                User(task.result?.user?.uid ?: throw IllegalStateException("Expected a user ID"))
+            )
+        }
     }
 
     override fun isUserLoggedIn() = auth.currentUser != null

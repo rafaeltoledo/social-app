@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="button_google_sign_in">Sign in with Google</string>
+    <string name="button_facebook_sign_in">Sign in with Facebook</string>
 
     <string name="error_sign_in">Failed to perform sign in</string>
     <string name="error_default_message">Oops… something went wrong!</string>

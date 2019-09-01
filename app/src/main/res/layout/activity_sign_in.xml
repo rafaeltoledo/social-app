@@ -42,6 +42,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_logo" />
 
+        <Button
+            android:id="@+id/button_facebook_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="@{!safeUnbox(viewModel.loading)}"
+            android:onClick="@{v -> viewModel.facebookSignIn((Activity) context)}"
+            android:text="@string/button_facebook_sign_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_google_sign_in" />
+
         <ProgressBar
             android:id="@+id/progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -55,4 +66,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-

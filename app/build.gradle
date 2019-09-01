@@ -55,6 +55,9 @@ android {
         debug {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT\""
 
+            resValue 'string', 'fb_app_id', "\"$System.env.FB_APP_ID_DEVELOPMENT\""
+            resValue 'string', 'fb_login_protocol_scheme', "\"$System.env.FB_LOGIN_PROTOCOL_SCHEME_DEVELOPMENT\""
+
             multiDexEnabled true
 
             applicationIdSuffix '.dev'
@@ -63,6 +66,9 @@ android {
 
         release {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_RELEASE\""
+
+            resValue 'string', 'fb_app_id', "\"$System.env.FB_APP_ID_RELEASE\""
+            resValue 'string', 'fb_login_protocol_scheme', "\"$System.env.FB_LOGIN_PROTOCOL_SCHEME_RELEASE\""
 
             signingConfig signingConfigs.release
             minifyEnabled true
@@ -93,12 +99,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidx.lifecycle"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'
 
-    implementation 'com.google.firebase:firebase-core:17.1.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-auth:19.0.0'
 
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.facebook.android:facebook-login:5.4.0'
 
     implementation "org.koin:koin-android:$versions.koin"
     implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
@@ -117,7 +124,7 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation "io.mockk:mockk:$versions.mockk"
 
-    androidTestImplementation 'com.github.tmurakami:dexopener:2.0.2'
+    androidTestImplementation 'com.github.tmurakami:dexopener:2.0.3'
     androidTestImplementation "io.mockk:mockk-android:$versions.mockk"
 
     androidTestUtil "androidx.test:orchestrator:$versions.androidx.testcore"

@@ -8,6 +8,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import net.rafaeltoledo.social.BuildConfig
 
+/**
+ * Authenticates a user using Google Auth.
+ */
 class GoogleAuth : DelegatedAuth {
 
     private var client: GoogleSignInClient? = null

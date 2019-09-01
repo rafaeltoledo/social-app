@@ -26,6 +26,7 @@ import net.rafaeltoledo.social.base.BaseTest
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.AuthResult
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
+import net.rafaeltoledo.social.data.auth.GoogleAuth
 import net.rafaeltoledo.social.data.auth.SocialProvider
 import net.rafaeltoledo.social.data.auth.Status
 import net.rafaeltoledo.social.data.model.User
@@ -47,8 +48,8 @@ class SignInActivityTest : BaseTest() {
         authManager = mockk()
         app.authManager = authManager
 
-        delegatedAuth = mockk()
-        app.delegatedAuth = delegatedAuth
+        delegatedAuth = mockk<GoogleAuth>()
+        app.googleAuth = delegatedAuth
 
         every { delegatedAuth.build<DelegatedAuth>(any()) } returns delegatedAuth
     }
