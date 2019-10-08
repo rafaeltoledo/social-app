@@ -6,12 +6,12 @@ references:
 
   config-android: &config-android
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-29
     working_directory: *workspace
     enviroment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-      GRADLE_OPTS: "-Xms512m -Xmx2048m -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dkotlin.incremental=false"
-      CIRCLE_JDK_VERSION: oraclejdk8
+      JAVA_TOOL_OPTIONS: "-Xmx4096m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+      GRADLE_OPTS: "-Xms512m -Xmx4096m -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dkotlin.incremental=false"
+      CIRCLE_JDK_VERSION: openjdk8
       TERM: dumb
 
   config-gcloud: &config-gcloud
