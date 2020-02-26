@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.databinding.ActivitySignInBinding
@@ -28,20 +28,20 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun observeAuthClient() {
-        signInViewModel.authClient.observe(this, Observer {
+        signInViewModel.authClient.observe(this) {
             it.signIn(this)
-        })
+        }
 
-        signInViewModel.user.observe(this, Observer {
+        signInViewModel.user.observe(this) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        })
+        }
     }
 
     private fun observeViewState() {
-        signInViewModel.error.observe(this, Observer {
+        signInViewModel.error.observe(this) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
