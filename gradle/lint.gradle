@@ -3,7 +3,6 @@ apply plugin: 'io.gitlab.arturbosch.detekt'
 detekt {
     toolVersion = versions.detekt
     input = files('src/main/kotlin')
-    filters = '.*/resources/.*,.*/build/.*'
 }
 
 configurations {
@@ -11,7 +10,7 @@ configurations {
 }
 
 dependencies {
-    ktlint 'com.pinterest:ktlint:0.35.0'
+    ktlint 'com.pinterest:ktlint:0.36.0'
 }
 
 task ktlint(type: JavaExec, group: 'verification') {

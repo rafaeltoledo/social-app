@@ -9,8 +9,8 @@ references:
       - image: circleci/android:api-29
     working_directory: *workspace
     enviroment:
-      JAVA_TOOL_OPTIONS: "-Xmx4096m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-      GRADLE_OPTS: "-Xms512m -Xmx4096m -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dkotlin.incremental=false"
+      JAVA_TOOL_OPTIONS: "-Xmx5120m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+      GRADLE_OPTS: "-Xms1g -Xmx5120m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
       CIRCLE_JDK_VERSION: openjdk8
       TERM: dumb
 
