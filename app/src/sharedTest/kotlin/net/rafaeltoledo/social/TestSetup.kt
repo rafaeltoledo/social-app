@@ -1,5 +1,6 @@
 package net.rafaeltoledo.social
 
+import com.facebook.FacebookSdk
 import net.rafaeltoledo.social.data.auth.AuthManager
 import net.rafaeltoledo.social.data.auth.DelegatedAuth
 import net.rafaeltoledo.social.data.auth.FacebookAuth
@@ -15,14 +16,17 @@ class TestSocialApp : SocialApp() {
 
     override fun onCreate() {
         super.onCreate()
-        loadKoinModules(listOf(
+        FacebookSdk.setAutoInitEnabled(false)
+        loadKoinModules(
+            listOf(
                 module(override = true) {
                     single(named(SocialProvider.GOOGLE.name)) { googleAuth }
                     single(named(SocialProvider.FACEBOOK.name)) { fbAuth }
                     single { authManager }
                     single { stringValue }
                 }
-        ))
+            )
+        )
     }
 
     override fun onTerminate() {

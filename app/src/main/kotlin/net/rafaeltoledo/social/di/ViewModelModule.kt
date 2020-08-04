@@ -9,6 +9,14 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }
-    viewModel { SignInViewModel(get(), get(named(SocialProvider.GOOGLE.name)), get(named(
-        SocialProvider.FACEBOOK.name))) }
+    viewModel {
+        SignInViewModel(
+            get(), get(named(SocialProvider.GOOGLE.name)),
+            get(
+                named(
+                    SocialProvider.FACEBOOK.name
+                )
+            )
+        )
+    }
 }

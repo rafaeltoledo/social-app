@@ -1,8 +1,8 @@
 package net.rafaeltoledo.social.data.auth
 
-import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import androidx.activity.ComponentActivity
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -37,13 +37,13 @@ class FacebookAuth : DelegatedAuth {
         }
     }
 
-    override fun <T : DelegatedAuth> build(activity: Activity): T {
+    override fun <T : DelegatedAuth> build(activity: ComponentActivity): T {
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance().registerCallback(callbackManager, callback)
         @Suppress("UNCHECKED_CAST") return this as T
     }
 
-    override fun signIn(activity: Activity) {
+    override fun signIn(activity: ComponentActivity) {
         countDownLatch = CountDownLatch(1)
         LoginManager.getInstance().logInWithReadPermissions(activity, listOf("email", "public_profile"))
     }

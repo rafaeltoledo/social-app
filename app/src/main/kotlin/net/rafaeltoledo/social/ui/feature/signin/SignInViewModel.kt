@@ -1,7 +1,7 @@
 package net.rafaeltoledo.social.ui.feature.signin
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.MutableLiveData
 import net.rafaeltoledo.social.R
 import net.rafaeltoledo.social.data.auth.AuthManager
@@ -30,7 +30,7 @@ class SignInViewModel(
      * Triggers the auth flow with Google
      * @param activity the Activity object needed for lifecycle
      */
-    fun googleSignIn(activity: Activity) {
+    fun googleSignIn(activity: ComponentActivity) {
         loading.value = true
 
         authClient.value = googleAuth.build(activity)
@@ -40,7 +40,7 @@ class SignInViewModel(
      * Triggers the auth flow with Facebook
      * @param activity the Activity object needed for lifecycle
      */
-    fun facebookSignIn(activity: Activity) {
+    fun facebookSignIn(activity: ComponentActivity) {
         loading.value = true
 
         authClient.value = facebookAuth.build(activity)
@@ -53,9 +53,11 @@ class SignInViewModel(
         launchDataLoad {
             val result = authClient.value?.onResult(requestCode, resultCode, data)
             if (result?.status == Status.SUCCESS) {
-                user.postValue(auth.socialSignIn(
-                    token = result.token ?: throw IllegalStateException("Empty token"),
-                    provider = authClient.value?.provider() ?: throw IllegalStateException("Empty provider"))
+                user.postValue(
+                    auth.socialSignIn(
+                        token = result.token ?: throw IllegalStateException("Empty token"),
+                        provider = authClient.value?.provider() ?: throw IllegalStateException("Empty provider")
+                    )
                 )
             } else {
                 error.postValue(R.string.error_sign_in)
