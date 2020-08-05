@@ -1,13 +1,13 @@
 package net.rafaeltoledo.social.data.auth
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.ComponentActivity
 
 interface DelegatedAuth {
 
-    fun <T : DelegatedAuth> build(activity: Activity): T
+    fun <T : DelegatedAuth> build(activity: ComponentActivity): T
 
-    fun signIn(activity: Activity)
+    fun signIn(activity: ComponentActivity)
 
     fun onResult(requestCode: Int, resultCode: Int, data: Intent?): AuthResult
 

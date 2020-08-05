@@ -17,10 +17,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(TextView(this).apply {
-            id = R.id.content
-            text = mainViewModel.getString()
-        })
+        setContentView(
+            TextView(this).apply {
+                id = R.id.content
+                text = mainViewModel.getString()
+            }
+        )
     }
 
     override fun onStart() {

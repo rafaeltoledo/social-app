@@ -15,12 +15,14 @@ open class SocialApp : Application() {
         startKoin {
             androidContext(applicationContext)
 
-            modules(listOf(
-                viewModelModule,
-                firstModule,
-                authModule,
-                firebaseModule
-            ))
+            modules(
+                listOf(
+                    viewModelModule,
+                    firstModule,
+                    authModule,
+                    firebaseModule
+                )
+            )
         }
     }
 }

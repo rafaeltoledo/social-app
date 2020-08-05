@@ -1,7 +1,7 @@
 package net.rafaeltoledo.social.data.auth
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.ComponentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -15,12 +15,12 @@ class GoogleAuth : DelegatedAuth {
 
     private var client: GoogleSignInClient? = null
 
-    override fun <T : DelegatedAuth> build(activity: Activity): T {
+    override fun <T : DelegatedAuth> build(activity: ComponentActivity): T {
         if (client == null) {
             val options = GoogleSignInOptions.Builder()
-                    .requestIdToken(BuildConfig.GOOGLE_REQUEST_ID_TOKEN)
-                    .requestEmail()
-                    .build()
+                .requestIdToken(BuildConfig.GOOGLE_REQUEST_ID_TOKEN)
+                .requestEmail()
+                .build()
 
             client = GoogleSignIn.getClient(activity, options)
         }
@@ -28,7 +28,7 @@ class GoogleAuth : DelegatedAuth {
         @Suppress("UNCHECKED_CAST") return this as T
     }
 
-    override fun signIn(activity: Activity) {
+    override fun signIn(activity: ComponentActivity) {
         activity.startActivityForResult(client?.signInIntent, RESULT_SIGN_IN)
     }
 

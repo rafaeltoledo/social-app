@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="android.app.Activity" />
+        <import type="androidx.activity.ComponentActivity" />
 
         <import type="android.view.View" />
 
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:enabled="@{!safeUnbox(viewModel.loading)}"
-            android:onClick="@{v -> viewModel.googleSignIn((Activity) context)}"
+            android:onClick="@{v -> viewModel.googleSignIn((ComponentActivity) context)}"
             android:text="@string/button_google_sign_in"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:enabled="@{!safeUnbox(viewModel.loading)}"
-            android:onClick="@{v -> viewModel.facebookSignIn((Activity) context)}"
+            android:onClick="@{v -> viewModel.facebookSignIn((ComponentActivity) context)}"
             android:text="@string/button_facebook_sign_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

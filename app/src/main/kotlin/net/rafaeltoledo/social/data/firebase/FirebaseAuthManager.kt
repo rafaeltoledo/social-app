@@ -5,14 +5,14 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import net.rafaeltoledo.social.data.auth.AuthManager
+import net.rafaeltoledo.social.data.auth.SocialProvider
+import net.rafaeltoledo.social.data.model.User
 import java.lang.Exception
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import net.rafaeltoledo.social.data.auth.AuthManager
-import net.rafaeltoledo.social.data.auth.SocialProvider
-import net.rafaeltoledo.social.data.model.User
 
 class FirebaseAuthManager : AuthManager {
 
