@@ -6,11 +6,11 @@ references:
 
   config-android: &config-android
     docker:
-      - image: circleci/android:api-29
+      - image: circleci/android:api-30
     working_directory: *workspace
     enviroment:
-      JAVA_TOOL_OPTIONS: "-Xmx6g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-      GRADLE_OPTS: "-Xms1g -Xmx1g -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
+      JAVA_TOOL_OPTIONS: "-Xmx3072m -Xms1024m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=1024m -XX:MaxMetaspaceSize=1024m -XX:AdaptiveSizePolicyWeight=90 -XX:+ExitOnOutOfMemoryError"
+      GRADLE_OPTS: "-Xmx3072m -Xms1024m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
       CIRCLE_JDK_VERSION: openjdk8
       TERM: dumb
 
