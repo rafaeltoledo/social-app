@@ -1,6 +1,7 @@
 package net.rafaeltoledo.social.data.auth
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.ComponentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -38,6 +39,7 @@ class GoogleAuth : DelegatedAuth {
             val account = task.getResult(ApiException::class.java)
             AuthResult(Status.SUCCESS, account!!.idToken)
         } catch (e: ApiException) {
+            Log.w("Google Auth", "Failed to retrieve token", e)
             AuthResult(Status.FAILURE)
         }
     }
