@@ -11,12 +11,9 @@ val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel {
         SignInViewModel(
-            get(), get(named(SocialProvider.GOOGLE.name)),
-            get(
-                named(
-                    SocialProvider.FACEBOOK.name
-                )
-            )
+            get(),
+            get(named(SocialProvider.GOOGLE.name)),
+            get(named(SocialProvider.FACEBOOK.name)),
         )
     }
 }
