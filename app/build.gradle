@@ -61,7 +61,7 @@ android {
         debug {
             buildConfigField 'String', 'GOOGLE_REQUEST_ID_TOKEN', "\"$System.env.GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT\""
 
-            resValue 'string', 'fb_app_id', "\"$System.env.FB_APP_ID_DEVELOPMENT\""
+                resValue 'string', 'fb_app_id', "\"$System.env.FB_APP_ID_DEVELOPMENT\""
             resValue 'string', 'fb_login_protocol_scheme', "\"$System.env.FB_LOGIN_PROTOCOL_SCHEME_DEVELOPMENT\""
 
             multiDexEnabled true

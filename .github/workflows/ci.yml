@@ -1,0 +1,133 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      JAVA_TOOL_OPTIONS: "-Xmx5120m -XX:+UnlockExperimentalVMOptions"
+      GRADLE_OPTS: "-Xms1g -Xmx5120m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
+
+      RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+      RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+      RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+
+      GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT: ${{ secrets.GOOGLE_REQUEST_ID_TOKEN_DEVELOPMENT }}
+      GOOGLE_REQUEST_ID_TOKEN_RELEASE: ${{ secrets.GOOGLE_REQUEST_ID_TOKEN_RELEASE }}
+
+      FB_LOGIN_PROTOCOL_SCHEME_DEVELOPMENT: ${{ secrets.FB_LOGIN_PROTOCOL_SCHEME_DEVELOPMENT }}
+      FB_APP_ID_DEVELOPMENT: ${{ secrets.FB_APP_ID_DEVELOPMENT }}
+      FB_LOGIN_PROTOCOL_SCHEME_RELEASE: ${{ secrets.FB_LOGIN_PROTOCOL_SCHEME_RELEASE }}
+      FB_APP_ID_RELEASE: ${{ secrets.FB_APP_ID_RELEASE }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Gradle Wrapper Validation
+      uses: gradle/wrapper-validation-action@v1
+
+    - name: Install JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'gradle'
+
+    - name: Decrypt release key
+      run: openssl aes-256-cbc -d -in distribution/release.keystore-cipher -out distribution/release.keystore -md sha256 -k ${{ secrets.CIPHER_DECRYPT_KEY }}
+
+    - name: Setup Google Services JSON
+      run: |
+        mkdir -p app/src/debug/ && touch app/src/debug/google-services.json
+        echo '${{ secrets.JSON_FIREBASE_DEVELOPMENT }}' >> "app/src/debug/google-services.json"
+        mkdir -p app/src/release/ && touch app/src/release/google-services.json
+        echo '${{ secrets.JSON_FIREBASE_RELEASE }}' >> "app/src/release/google-services.json"
+
+    - name: Download dependencies
+      run: ./gradlew help --stacktrace
+
+    - name: Run Linters
+      run: ./gradlew check --stacktrace
+
+    - name: Run Tests and generate Code Coverage
+      run: ./gradlew createCombinedCoverageReport --stacktrace
+
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-reports
+        path: ./app/build/reports
+
+    - name: Upload code coverage data
+      run: ./gradlew coveralls --stacktrace
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+    - name: Build
+      run: ./gradlew assemble bundle assembleAndroidTest --stacktrace
+
+    - name: Upload Test APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-apk
+        path: ./app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: debug-apk
+        path: ./app/build/outputs/apk/debug/app-debug.apk
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: apk
+        path: ./app/build/outputs/apk/release/app-release.apk
+
+    - name: Upload Bundle
+      uses: actions/upload-artifact@v2
+      with:
+        name: bundle
+        path: ./app/build/outputs/bundle/release/app-release.aab
+
+  test_instrumented:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Download app APK
+      uses: actions/download-artifact@v1
+      with:
+        name: debug-apk
+
+    - name: Download app APK
+      uses: actions/download-artifact@v1
+      with:
+        name: test-apk
+
+    - name: Login to Google Cloud
+      uses: google-github-actions/setup-gcloud@master
+
+    - name: Setup Google Cloud auth
+      run: scripts/ftl-setup.sh
+
+    - name: Run tests on Firebase Test Lab
+      run: scripts/ftl-run-tests.sh
+
+    - name: Download results
+      if: always()
+      run: scripts/ftl-download-results.sh firebase_test_results
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: firebase-test-results
+        path: ./firebase_test_results
