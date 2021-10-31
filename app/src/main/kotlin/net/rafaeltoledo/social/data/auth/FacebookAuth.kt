@@ -20,8 +20,8 @@ class FacebookAuth : DelegatedAuth {
     private lateinit var countDownLatch: CountDownLatch
 
     private val callback = object : FacebookCallback<LoginResult> {
-        override fun onSuccess(result: LoginResult?) {
-            status = AuthResult(Status.SUCCESS, result?.accessToken?.token)
+        override fun onSuccess(result: LoginResult) {
+            status = AuthResult(Status.SUCCESS, result.accessToken.token)
             countDownLatch.countDown()
         }
 
@@ -30,7 +30,7 @@ class FacebookAuth : DelegatedAuth {
             countDownLatch.countDown()
         }
 
-        override fun onError(error: FacebookException?) {
+        override fun onError(error: FacebookException) {
             Log.e("FacebookAuth", "Could not complete Facebook signin", error)
             status = AuthResult(Status.FAILURE)
             countDownLatch.countDown()

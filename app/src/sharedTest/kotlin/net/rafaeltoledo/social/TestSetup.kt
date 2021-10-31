@@ -19,7 +19,7 @@ class TestSocialApp : SocialApp() {
         FacebookSdk.setAutoInitEnabled(false)
         loadKoinModules(
             listOf(
-                module(override = true) {
+                module {
                     single(named(SocialProvider.GOOGLE.name)) { googleAuth }
                     single(named(SocialProvider.FACEBOOK.name)) { fbAuth }
                     single { authManager }
@@ -36,25 +36,25 @@ class TestSocialApp : SocialApp() {
 
     var googleAuth: DelegatedAuth = GoogleAuth()
         set(value) {
-            loadKoinModules(module { single(named(SocialProvider.GOOGLE.name), override = true) { value } })
+            loadKoinModules(module { single(named(SocialProvider.GOOGLE.name)) { value } })
             field = value
         }
 
     var fbAuth: DelegatedAuth = FacebookAuth()
         set(value) {
-            loadKoinModules(module { single(named(SocialProvider.FACEBOOK.name), override = true) { value } })
+            loadKoinModules(module { single(named(SocialProvider.FACEBOOK.name)) { value } })
             field = value
         }
 
     var authManager: AuthManager = noOpAuthManager
         set(value) {
-            loadKoinModules(module { single(override = true) { value } })
+            loadKoinModules(module { single { value } })
             field = value
         }
 
     var stringValue: String = "Social App"
         set(value) {
-            loadKoinModules(module { single(override = true) { value } })
+            loadKoinModules(module { single { value } })
             field = value
         }
 }
