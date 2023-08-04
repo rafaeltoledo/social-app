@@ -26,11 +26,14 @@ class GoogleAuth : DelegatedAuth {
             client = GoogleSignIn.getClient(activity, options)
         }
 
-        @Suppress("UNCHECKED_CAST") return this as T
+        @Suppress("UNCHECKED_CAST")
+        return this as T
     }
 
     override fun signIn(activity: ComponentActivity) {
-        activity.startActivityForResult(client?.signInIntent, RESULT_SIGN_IN)
+        client?.signInIntent?.let {
+            activity.startActivityForResult(it, RESULT_SIGN_IN)
+        }
     }
 
     override fun onResult(requestCode: Int, resultCode: Int, data: Intent?): AuthResult {

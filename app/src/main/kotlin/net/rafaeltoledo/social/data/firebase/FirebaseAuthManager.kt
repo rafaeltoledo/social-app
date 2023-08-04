@@ -22,7 +22,7 @@ class FirebaseAuthManager : AuthManager {
                 when (provider) {
                     SocialProvider.GOOGLE -> GoogleAuthProvider.getCredential(token, null)
                     SocialProvider.FACEBOOK -> FacebookAuthProvider.getCredential(token)
-                }
+                },
             ).addOnCompleteListener { task ->
                 handleResult(task, it)
             }
@@ -31,11 +31,11 @@ class FirebaseAuthManager : AuthManager {
     private fun handleResult(task: Task<AuthResult>, continuation: Continuation<User>) {
         if (task.isSuccessful.not()) {
             continuation.resumeWithException(
-                task.exception ?: Exception("No exception was thrown by Firebase")
+                task.exception ?: Exception("No exception was thrown by Firebase"),
             )
         } else {
             continuation.resume(
-                User(task.result?.user?.uid ?: throw IllegalStateException("Expected a user ID"))
+                User(task.result?.user?.uid ?: error("Expected a user ID")),
             )
         }
     }

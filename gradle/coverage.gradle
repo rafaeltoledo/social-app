@@ -19,9 +19,9 @@ task createCombinedCoverageReport(type: JacocoReport, dependsOn: 'testDebugUnitT
     executionData.setFrom(fileTree(dir: buildDir, includes: ['jacoco/testDebugUnitTest.exec']))
 
     reports {
-        xml.enabled = true
+        // xml.enabled = true
         xml.destination file(report)
-        html.enabled = true
+        // html.enabled = true
     }
 }
 

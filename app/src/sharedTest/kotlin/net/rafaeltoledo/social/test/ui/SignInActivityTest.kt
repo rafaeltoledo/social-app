@@ -60,12 +60,12 @@ class SignInActivityTest : BaseTest() {
         every { delegatedAuth.signIn(any()) } answers {
             (it.invocation.args[0] as Activity).startActivityForResult(
                 Intent().putExtra("key", "value"),
-                0
+                0,
             )
         }
         every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(
             Status.SUCCESS,
-            token = "ok"
+            token = "ok",
         )
 
         coEvery { authManager.socialSignIn(any(), any()) } returns User("1")
@@ -92,7 +92,7 @@ class SignInActivityTest : BaseTest() {
         every { delegatedAuth.signIn(any()) } answers {
             (it.invocation.args[0] as Activity).startActivityForResult(
                 Intent().putExtra("key", "value"),
-                0
+                0,
             )
         }
         every { delegatedAuth.onResult(any(), any(), any()) } returns AuthResult(Status.FAILURE)

@@ -20,7 +20,7 @@ import net.rafaeltoledo.social.ui.BaseViewModel
 class SignInViewModel(
     private val auth: AuthManager,
     private val googleAuth: DelegatedAuth,
-    private val facebookAuth: DelegatedAuth
+    private val facebookAuth: DelegatedAuth,
 ) : BaseViewModel() {
 
     val authClient = MutableLiveData<DelegatedAuth>()
@@ -55,9 +55,9 @@ class SignInViewModel(
             if (result?.status == Status.SUCCESS) {
                 user.postValue(
                     auth.socialSignIn(
-                        token = result.token ?: throw IllegalStateException("Empty token"),
-                        provider = authClient.value?.provider() ?: throw IllegalStateException("Empty provider")
-                    )
+                        token = result.token ?: error("Empty token"),
+                        provider = authClient.value?.provider() ?: error("Empty provider"),
+                    ),
                 )
             } else {
                 error.postValue(R.string.error_sign_in)

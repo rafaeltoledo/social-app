@@ -24,8 +24,8 @@ class TestSocialApp : SocialApp() {
                     single(named(SocialProvider.FACEBOOK.name)) { fbAuth }
                     single { authManager }
                     single { stringValue }
-                }
-            )
+                },
+            ),
         )
     }
 
