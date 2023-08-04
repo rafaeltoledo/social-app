@@ -20,8 +20,8 @@ open class SocialApp : Application() {
                     viewModelModule,
                     firstModule,
                     authModule,
-                    firebaseModule
-                )
+                    firebaseModule,
+                ),
             )
         }
     }

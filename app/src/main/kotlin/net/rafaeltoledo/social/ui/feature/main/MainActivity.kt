@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             TextView(this).apply {
                 id = R.id.content
                 text = mainViewModel.getString()
-            }
+            },
         )
     }
 

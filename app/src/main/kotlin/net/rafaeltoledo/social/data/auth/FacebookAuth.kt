@@ -40,7 +40,8 @@ class FacebookAuth : DelegatedAuth {
     override fun <T : DelegatedAuth> build(activity: ComponentActivity): T {
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance().registerCallback(callbackManager, callback)
-        @Suppress("UNCHECKED_CAST") return this as T
+        @Suppress("UNCHECKED_CAST")
+        return this as T
     }
 
     override fun signIn(activity: ComponentActivity) {
